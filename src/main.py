@@ -140,8 +140,9 @@ def comment():
     # Decrypt cypher data from Front
     data = Payload(decrypt(comment, os.environ.get('SECRET').encode()).decode("utf-8"))
 
+    userLogged = User.query.filter_by(email=data.user_email).first()
     # We the model object user to insert into the database.
-    comment = Comment(comment = data.comment_area, user_id = data.user_id)
+    comment = Comment(comment = data.comment_area, user_id = userLogged.id)
     db.session.add(comment)
     db.session.commit()
 
